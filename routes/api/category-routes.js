@@ -1,20 +1,21 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   try {
-    const cat = await Category.findAll({
+    const cat = Category.findAll({
       include: [{ model: Product }],
      });
     res.status(200).json(cat);
   } catch (err) {
+    console.error(err);
     res.status(500).json(err);
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', (req, res) => {
   try {
-    const cat = await Category.findByPk(req.params.id, {
+    const cat = Category.findByPk(req.params.id, {
       include: [{ model: Product }],
     });
     if (!cat) {
@@ -23,13 +24,14 @@ router.get('/:id', async (req, res) => {
     }
     res.status(200).json(cat);
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   try {
-    const cat = await Category.create(req.body);
+    const cat = Category.create(req.body);
     res.status(200).json(cat);
   } catch (err) {
     res.status(400).json(err);
@@ -38,7 +40,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', (req, res) => {
   try {
-    const cat = await Category.update(
+    const cat = Category.update(
       req.body,
       {
         where: {
@@ -54,13 +56,14 @@ router.put('/:id', (req, res) => {
 
     res.status(200).json(cat);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', (req, res) => {
   try {
-    const cat = await Category.destroy({
+    const cat = Category.destroy({
       where: {
         id: req.params.id,
       },
@@ -73,6 +76,7 @@ router.delete('/:id', async (req, res) => {
 
     res.status(200).json(cat);
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }});
 
